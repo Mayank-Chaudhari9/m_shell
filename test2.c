@@ -5,7 +5,7 @@
 
 int main(int argc, char const *argv[])
 {
-	execl("/bin/ls","ls","-l",0);
+	execl("/bin/ls","ls","-l");
 
 	return 0;
 }

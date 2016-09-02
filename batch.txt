@@ -1,0 +1,8 @@
+# submit the jobs in the following format
+# PATAH command -<attrib> 
+%BEGIN
+/bin/ls		ls	-l	
+
+
+%END
+

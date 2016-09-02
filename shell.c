@@ -2,41 +2,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <unistd.h>
+
 #include "shell.h"
 
-//void parse(FILE *f_ptr);
 
-int main(int argc, char const *argv[])
+
+void run()
 {
-
-	FILE *fp;
-	printf("%s working\n",argv[1]);
-	
-
-	fp=fopen(argv[1],"r");
-	if(!fp)
-	{
-		perror("Error : ");
-		return (-1);
-	}
-	
-	/**
-	*	Operations to control processing
-	*/
-	parse(fp);
-
-
-	fclose(fp);
-
-	return 0;
+	execl("/bin/ls","ls","-l",0);
 }
 
-/**
-*
-*Function to parse the file line by line.
-*
-**/
-/*
+
 void parse(FILE *f_ptr)
 {
 
@@ -107,5 +84,8 @@ void parse(FILE *f_ptr)
 
 	free(line);
 
+	run();
+
 }
-*/
+
+
