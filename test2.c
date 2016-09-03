@@ -3,9 +3,29 @@
 #include <stdlib.h>
 
 
+
+
+void split(char *commmand)
+{
+
+
+
+}
+
+
 int main(int argc, char const *argv[])
 {
-	execl("/bin/ls","ls","-l");
+	FILE *fp;
+	char *buf;
+	//fp=fopen("out.txt","a+");
+
+
+
+
+
+
+	execl("/bin/ls","ls","-al",0);
+	//fprintf(fp, "%s\n",buf);
 
 	return 0;
 }
