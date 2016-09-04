@@ -3,6 +3,6 @@
 
 void parse(FILE *f_ptr);
 
-void run();
+int process_INTERSTART(char *read_line);
 
 #endif

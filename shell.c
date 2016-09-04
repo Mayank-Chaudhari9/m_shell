@@ -7,11 +7,27 @@
 #include "shell.h"
 
 
-
-void run()
+int process_INTERSTART(char *read_line)
 {
-	execl("/bin/ls","ls","-l",0);
-}
+	char *buf,*string;
+	int index=0,compare;
+	string="#INTERSTART";
+	buf=read_line;
+	compare=strncmp(string,buf,11);
+	if (*buf=='#')
+	{
+		if (compare==0)
+			{
+				return 1;
+			}
+		else
+			return 0;
+	}
+	else
+		return 0;
+
+} 
+
 
 
 void parse(FILE *f_ptr)
@@ -21,13 +37,14 @@ void parse(FILE *f_ptr)
 	char *line = NULL,*read_l,c;
 	size_t len = 0;
 	ssize_t read;
-	int error=0,b_flag=0;
+	int error=0,b_flag=0,line_no=0,i_flag=0,test=0;
 
 	// while loop to read the file line by line and removing the comments
 
 	while ((read = getline(&line,&len,fp1)) != -1)
 	{
-		printf("Retrived line of length %zu :\n",read);
+		++line_no;
+		printf("Retrived line of length %zu :  on line number : %d\n",read,line_no);
 		read_l=(char *)malloc(sizeof(char)*read);
 		read_l=line;
 		c=*read_l;
@@ -37,9 +54,8 @@ void parse(FILE *f_ptr)
 				c=*read_l;
 			}
 		//ignore lines starting with #
-		if(*read_l=='#')
-			continue;
-		
+		/*if(*read_l=='#')
+			*/
 		//remove blank lines
 		if(read<=1)
 			continue;
@@ -56,12 +72,26 @@ void parse(FILE *f_ptr)
 					//printf("%s\n",read_l);
 				}
 
+
+
 			if(b_flag==1)
 				{
 					if(strstr(read_l,"%BEGIN"))
 						{
 							continue;
 						}
+					test=process_INTERSTART(read_l);
+					if(*read_l=='#')
+					{
+						if (test)
+							{
+								printf("INTERSTART Found\n");
+								/* code */
+							}
+						else
+							continue;
+					}
+
 					printf("%s\n",read_l);	
 				}
 
@@ -84,8 +114,12 @@ void parse(FILE *f_ptr)
 
 	free(line);
 
-	run();
+	//run();
 
 }
 
+void process_comment()
+{
+
+}
 

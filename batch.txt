@@ -1,7 +1,8 @@
 # submit the jobs in the following format
 # PATAH command -<attrib> 
 %BEGIN
-/bin/ls		ls	-l|more
+/bin/ls		ls	-l 	|	/bin/more		more
+/bin/ls		ls	-l 	|	/usr/bin/wc		wc
 
 
 %END
