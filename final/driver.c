@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <ctype.h>
+#include <sys/wait.h>
 
 
 int main(int argc, char const *argv[])
@@ -11,6 +14,8 @@ int main(int argc, char const *argv[])
 	char *line;
     size_t bufsize;
     size_t characters;
+    int status;
+    pid_t child;
 	//printf("%s working\n",argv[1]);
 	
 
@@ -44,7 +49,22 @@ int main(int argc, char const *argv[])
 			}
 
 		if((strncmp(input,"dup2",4))==0)
-			printf("$>> you choose dup2\n");
+		{
+			child=fork();
+
+			if ((child==0))
+				{
+					execl( "/usr/bin/gcc", "gcc","-o","dup.out","dup.c","duph.c", NULL );
+				}
+			else
+				{	
+							waitpid(child,&status,0);
+							printf("i am here\n");
+							execl("./dup.out","dup.out",argv[1],NULL);
+							
+				}	
+		}
+
 		else if ((strncmp(input,"tee",4))==0)
 		{
 			printf("$>> you choose tee\n");

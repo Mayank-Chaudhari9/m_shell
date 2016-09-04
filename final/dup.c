@@ -1,13 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <string.h>
 
+#include "parser.h"
 
-
-void run()
-{
-	execl("./t1.out","t1.out",0);
-}
 
 
 
@@ -32,5 +28,4 @@ int main(int argc, char const *argv[])
 
 	fclose(fp);
 
-	return 0;
 }
