@@ -1,0 +1,27 @@
+first test
+second line
+#hhjjk
+%BEGIN
+
+functions here
+something is here
+%BEGIN
+this should work
+  #this should be commented
+#INTERSTART
+
+%END
+#this should be commented
+%BEGIN
+This should not be commented
+#INTERSTAR
+this is second begin
+hello after this it contain comment /* it is a comment*/
+%END
+
+
+file is over
+%BEGIN
+
+                  space test
+    

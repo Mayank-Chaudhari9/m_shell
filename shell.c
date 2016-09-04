@@ -53,9 +53,7 @@ void parse(FILE *f_ptr)
 				read_l=read_l+1;
 				c=*read_l;
 			}
-		//ignore lines starting with #
-		/*if(*read_l=='#')
-			*/
+		
 		//remove blank lines
 		if(read<=1)
 			continue;
@@ -76,16 +74,17 @@ void parse(FILE *f_ptr)
 
 			if(b_flag==1)
 				{
-					if(strstr(read_l,"%BEGIN"))
+					if(strstr(read_l,"%BEGIN"))     // Ignoring in between %BEGINS
 						{
 							continue;
 						}
+				/*--------------------------------------- check for single line comment and INTERSTART -------------------------*/		
 					test=process_INTERSTART(read_l);
 					if(*read_l=='#')
 					{
 						if (test)
 							{
-								printf("INTERSTART Found\n");
+								printf("INTERSTART Found\n");   // here comes call for INTERSTART command
 								/* code */
 							}
 						else
@@ -94,8 +93,9 @@ void parse(FILE *f_ptr)
 
 					printf("%s\n",read_l);	
 				}
-
-			if(strstr(read_l,"%END")&&(b_flag==1))
+				/*-------------------------------------------  condition checking for %END ------------------------------------*/
+				
+			if(strstr(read_l,"%END")&&(b_flag==1))  
 			{
 				b_flag=0;
 				error=0;
