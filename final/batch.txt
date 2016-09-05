@@ -4,9 +4,9 @@
 /bin/ls		-l 	|	/bin/more		more
 /bin/ls		-l 	|	/usr/bin/wc		wc
 
-/bin/ls		ls 	-l 	/
+ls 	-l 	/
 
-/bin/rm	t1.txt
+rm	t1.txt
 
 %END
 

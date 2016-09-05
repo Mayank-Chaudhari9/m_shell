@@ -3,6 +3,8 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <sys/wait.h>
+#include <stdarg.h>
 
 #include "parser.h"
 
@@ -35,9 +37,11 @@ void run_non_pipe(char *command,ssize_t read)
 	char *np_command;
 	char tokens[read],*tok[20];
 
-	char *token,*tokeni,arg[20];
-	int i=0,count,j=0;
-	ssize_t s=0;
+	char *token,*tokeni;
+	int i=0,count,j=0,status;
+	size_t s=0;
+	pid_t child;
+
 
 	np_command=command;
 	printf("%zu\n",read);
@@ -46,8 +50,6 @@ void run_non_pipe(char *command,ssize_t read)
 	 	tokens[s]=*command;
 	 	command++;
 	 }
-	// printf("%s\n",tokens);
-	/*printf("%s\n",np_command);*/
 	token=strtok(tokens," ,	");
 	count=0;
 
@@ -59,19 +61,29 @@ void run_non_pipe(char *command,ssize_t read)
 	 	tok[i]=tokeni;
 	 	i++;
 	 	token = strtok(NULL, " ,	");
-	 	//printf("%s\n",tokeni);
+	 	
+	 }
+	 //printf("%s\n",tok[0]);
 
-	 }
-	 
-	 for(i=1;i<count;i++)
+	child=fork();
+	if (child>=0)
 	 {
-	 	arg[j]=tok[i];
-	 	//j++;
-	 }
-	printf("%s\n",arg);
-	execv(tok[0],arg);
+	 	if(child==0)
+	 	{
+	 		execvp(tok[0],tok);
+	 		die("execvp");
+	 	}
+	}
+	else
+	{
+		wait(&status); 
+	}
+
+	//execvp(tok[0],tok);
 	 
 }
+
+
 
 // function to seperate piped from non piped 
 
@@ -144,6 +156,13 @@ void parse(FILE *f_ptr)
 						{
 							continue;
 						}
+
+					if(strstr(read_l,"%END")&&(b_flag==1))  
+						{
+							b_flag=0;
+							error=0;
+							continue;
+						}
 				/*--------------------------------------- check for single line comment and INTERSTART -------------------------*/		
 					test=process_INTERSTART(read_l);
 					if(*read_l=='#')
@@ -156,18 +175,15 @@ void parse(FILE *f_ptr)
 						else
 							continue;
 					}
+					
 
 					//printf("%s\n",read_l);
 
-					process_command(read_l,read);	
+					//process_command(read_l,read);	
 				}
 				/*-------------------------------------------  condition checking for %END ------------------------------------*/
 				
-			if(strstr(read_l,"%END")&&(b_flag==1))  
-			{
-				b_flag=0;
-				error=0;
-			}
+			
 			
 		}
 		

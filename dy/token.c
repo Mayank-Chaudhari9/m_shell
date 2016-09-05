@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+<sys/wait.h>
 
 char *tokens[20];
 int main(int argc, char const *argv[])
@@ -23,10 +24,10 @@ int main(int argc, char const *argv[])
 	 	token = strtok(NULL, " ,	");
 
 	 }
-
+	 execvp("ls","")
 	// execl( "/bin/ls","ls -l", NULL );
 
-	for(i=1;i<count;i++)
+	/*for(i=1;i<count;i++)
 	 {
 	 	arg[j]=tokens[i];
 	 }
