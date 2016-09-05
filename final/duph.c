@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdarg.h>
+#include <fcntl.h>
 
 #include "parser.h"
 
@@ -36,6 +37,13 @@ void run_non_pipe(char *command,ssize_t read)
 {
 	char *np_command;
 	char tokens[read],*tok[20];
+	//char *filename="OUTPUT.txt";
+
+	int file = open("OUTPUT.txt",
+        O_CREAT | O_RDWR | O_APPEND,
+        S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH );
+	dup2(file,1);
+    close(file);
 
 	char *token,*tokeni;
 	int i=0,count,j=0,status;
@@ -63,15 +71,16 @@ void run_non_pipe(char *command,ssize_t read)
 	 	token = strtok(NULL, " ,	");
 	 	
 	 }
-	 //printf("%s\n",tok[0]);
+	// printf("%s\n",tok[0]);
 
 	child=fork();
 	if (child>=0)
 	 {
 	 	if(child==0)
 	 	{
+	 		
 	 		execvp(tok[0],tok);
-	 		die("execvp");
+	 		exit(1);
 	 	}
 	}
 	else
@@ -96,7 +105,11 @@ void process_command(char *command,ssize_t read)
 	command1=command;
 
 	if(strchr(command1,'|')!=NULL)
+	{
+
 		printf("It need pipe solution\n");
+		
+	}
 	else
 		{
 			run_non_pipe(command,read);
@@ -179,7 +192,7 @@ void parse(FILE *f_ptr)
 
 					//printf("%s\n",read_l);
 
-					//process_command(read_l,read);	
+					process_command(read_l,read);	
 				}
 				/*-------------------------------------------  condition checking for %END ------------------------------------*/
 				
