@@ -6,21 +6,19 @@
 char *tokens[20];
 int main(int argc, char const *argv[])
 {
-	char  string[]="/bin/ls		ls	-l";
+	char  string[]="/bin/rm	 x.txt";
 
-	char *token,*tokeni;
-	int i=0,count;
+	char *token,*tokeni,*arg[200];
+	int i=0,count,j=0;
 	token=strtok(string," ,	");
 	count=0;
 	 while(token !=NULL)
 	 {
 	 	count=count+1;
-	 	tokeni=(char *)malloc(sizeof(strlen(token)));
+	 	
 	 	tokeni=token;
 	 	tokens[i]=tokeni;
-	 	//count++;
-	 	//printf("%d\n", strlen(token));
-
+	 	
 	 	i++;
 	 	token = strtok(NULL, " ,	");
 
@@ -28,12 +26,16 @@ int main(int argc, char const *argv[])
 
 	// execl( "/bin/ls","ls -l", NULL );
 
-
-	 for(i=0;i<count;i++)
+	for(i=1;i<count;i++)
 	 {
-	 	printf("%s\n", tokens[i]);
+	 	arg[j]=tokens[i];
 	 }
-	 execl( "/bin/ls","ls -la>","a.txt", NULL );
+
+	
+	 printf("%s\n",tokens );
+	 execv(tokens[0],tokens);
+
+	 
 
 
 	 	/*token=strchr(string,'|');

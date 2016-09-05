@@ -30,32 +30,70 @@ int process_INTERSTART(char *read_line)
 
 } 
 
+void run_non_pipe(char *command,ssize_t read)
+{
+	char *np_command;
+	char tokens[read],*tok[20];
+
+	char *token,*tokeni,arg[20];
+	int i=0,count,j=0;
+	ssize_t s=0;
+
+	np_command=command;
+	printf("%zu\n",read);
+	 for(s=0;s<read-1;s++)
+	 {
+	 	tokens[s]=*command;
+	 	command++;
+	 }
+	// printf("%s\n",tokens);
+	/*printf("%s\n",np_command);*/
+	token=strtok(tokens," ,	");
+	count=0;
+
+	 while(token !=NULL)
+	 {
+	 	count=count+1;
+	 	
+	 	tokeni=token;
+	 	tok[i]=tokeni;
+	 	i++;
+	 	token = strtok(NULL, " ,	");
+	 	//printf("%s\n",tokeni);
+
+	 }
+	 
+	 for(i=1;i<count;i++)
+	 {
+	 	arg[j]=tok[i];
+	 	//j++;
+	 }
+	printf("%s\n",arg);
+	execv(tok[0],arg);
+	 
+}
+
 // function to seperate piped from non piped 
 
-void process_command(char *command)
+void process_command(char *command,ssize_t read)
 {
 	char *command1;
-
+	//printf("%d\n", sizeof(command));
+	//command1=(char *)malloc(sizeof(char)*read);
+	//printf("%s\n",command);
 	command1=command;
 
 	if(strchr(command1,'|')!=NULL)
 		printf("It need pipe solution\n");
 	else
-		printf("can run without pipe\n");
+		{
+			run_non_pipe(command,read);
+			//printf("%s\n",command1);
+		}
 }
 
-void run_non_pipe(char *command)
-{
-	char *np_command;
-	char *tokens[100];
-
-	np_command=command;
-
-	
 
 
-
-}
 
 
 void parse(FILE *f_ptr)
@@ -119,8 +157,9 @@ void parse(FILE *f_ptr)
 							continue;
 					}
 
-					printf("%s\n",read_l);
-					process_command(read_l);	
+					//printf("%s\n",read_l);
+
+					process_command(read_l,read);	
 				}
 				/*-------------------------------------------  condition checking for %END ------------------------------------*/
 				
